@@ -1,59 +1,49 @@
-# QuizGame
+# Quiz Tech
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+Jogo de quiz interativo em **Angular**, com suíte **Playwright** (TypeScript) e CI no GitHub Actions.
 
-## Development server
-
-To start a local development server, run:
+## Rodar o app
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Abra [http://localhost:4200](http://localhost:4200).
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Testes E2E (Playwright)
 
 ```bash
-ng generate component component-name
+# sobe o app automaticamente (webServer) e roda a suíte
+npm run e2e
+
+# modo interativo
+npm run e2e:ui
+
+# relatório HTML do último run
+npm run e2e:report
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Estrutura
 
-```bash
-ng generate --help
-```
+- `e2e/quiz.spec.ts` — cenários E2E
+- `e2e/pages/quiz.page.ts` — Page Object
+- `playwright.config.ts` — config + webServer
+- `.github/workflows/e2e.yml` — CI em push/PR
 
-## Building
+### Cenários cobertos
 
-To build the project run:
+1. Caminho feliz (gabarito)
+2. Errou tudo (score 0)
+3. Jogar novamente (reset de estado)
+4. Feedback visual correto (classe `correct`)
+5. Feedback visual errado (classe `wrong` + destaque da correta)
+6. Progresso (`Pergunta X de 3`)
+7. Bloqueio das opções no intervalo entre respostas
 
-```bash
-ng build
-```
+## CI
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+O workflow **E2E Tests** roda em:
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- push em `main` / `feature/**`
+- pull requests para `main`
