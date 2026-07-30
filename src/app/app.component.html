@@ -1,0 +1,76 @@
+<main class="app-shell">
+  <div class="glow glow-a" aria-hidden="true"></div>
+  <div class="glow glow-b" aria-hidden="true"></div>
+
+  @if (screen === 'start') {
+    <section class="card start-screen" aria-labelledby="game-title">
+      <p class="eyebrow">Conhecimentos gerais · Tecnologia</p>
+      <h1 id="game-title" class="title">Quiz Tech</h1>
+      <p class="subtitle">
+        Teste seus conhecimentos com perguntas rápidas de múltipla escolha.
+      </p>
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-testid="start-btn"
+        (click)="startGame()"
+      >
+        Iniciar Jogo
+      </button>
+    </section>
+  }
+
+  @if (screen === 'quiz') {
+    <section class="card quiz-screen" aria-live="polite">
+      <div class="quiz-header">
+        <p class="progress" data-testid="progress-label">{{ progressLabel }}</p>
+        <div class="progress-track" aria-hidden="true">
+          <div
+            class="progress-fill"
+            [style.width.%]="((currentIndex + 1) / totalQuestions) * 100"
+          ></div>
+        </div>
+      </div>
+
+      <h2 class="question-title" data-testid="question-title">
+        {{ currentQuestion.text }}
+      </h2>
+
+      <div class="options" role="group" aria-label="Opções de resposta">
+        @for (option of currentQuestion.options; track $index) {
+          <button
+            type="button"
+            class="option-btn"
+            data-testid="option-btn"
+            [attr.data-option-index]="$index"
+            [ngClass]="optionClass($index)"
+            [disabled]="answerLocked"
+            (click)="selectOption($index)"
+          >
+            <span class="option-letter">{{ ['A', 'B', 'C', 'D'][$index] }}</span>
+            <span class="option-text">{{ option }}</span>
+          </button>
+        }
+      </div>
+    </section>
+  }
+
+  @if (screen === 'result') {
+    <section class="card result-screen" aria-labelledby="result-title">
+      <p class="eyebrow">Fim de jogo</p>
+      <h2 id="result-title" class="title result-title">Resultado</h2>
+      <p class="score" data-testid="score-result">
+        Você acertou {{ score }} de {{ totalQuestions }}
+      </p>
+      <p class="subtitle">{{ resultMessage }}</p>
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-testid="restart-btn"
+        (click)="restartGame()"
+      >
+        Jogar Novamente
+      </button>
+    </section>
+  }
+</main>
